@@ -14,6 +14,10 @@ app.use(async (ctx, next) => {
 app.use(async ctx => {
     console.log(ctx.request.url);
     ctx.body = "Hello world!"
-});
+}); 
 
+// error solver 
+app.on('error', err => {
+    
+})
 app.listen(5007);
