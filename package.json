@@ -1,0 +1,29 @@
+{
+  "name": "koa-learn",
+  "version": "1.0.0",
+  "description": "A demo to learn kao.",
+  "main": "App.js",
+  "dependencies": {
+    "koa": "^2.5.1",
+    "socket.io": "^2.1.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "server": "node App.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xiaobaiha/node-koa-learn.git"
+  },
+  "keywords": [
+    "koa",
+    "node"
+  ],
+  "author": "xiaobaiha",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xiaobaiha/node-koa-learn/issues"
+  },
+  "homepage": "https://github.com/xiaobaiha/node-koa-learn#readme"
+}
