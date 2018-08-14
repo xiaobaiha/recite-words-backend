@@ -1,5 +1,6 @@
 const Koa = require('koa');
 const route = require('koa-route');
+const parse = require('co-body');
 const app = new Koa();
 
 // logger
@@ -12,13 +13,14 @@ app.use(async (ctx, next) => {
 });
 
 // response
-app.use(route.get('/hello', async ctx => {
-    console.log(ctx.request.url);
+app.use(route.post('/hello', async ctx => {
+    let post = await parse(ctx.request);
+    console.log(ctx.request.url, post);
     ctx.body = "Hello world!"
 })); 
 
 // error solver 
 app.on('error', err => {
-    
+    console.error("error:", err);
 })
 app.listen(5007);
