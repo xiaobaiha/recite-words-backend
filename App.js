@@ -1,4 +1,5 @@
 const Koa = require('koa');
+const route = require('koa-route');
 const app = new Koa();
 
 // logger
@@ -11,10 +12,10 @@ app.use(async (ctx, next) => {
 });
 
 // response
-app.use(async ctx => {
+app.use(route.get('/hello', async ctx => {
     console.log(ctx.request.url);
     ctx.body = "Hello world!"
-}); 
+})); 
 
 // error solver 
 app.on('error', err => {
