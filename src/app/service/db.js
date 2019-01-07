@@ -5,13 +5,28 @@ const connection = mysql.createConnection(mysqlConfig);
 
 connection.connect();
 
-const login = (name, pwd) => {
+const login = (name, pwd, loginType='name') => {
     return new Promise((resolve, reject) => {
-        connection.query(`SELECT password FROM user WHERE name="${name}"`, (err, results, fields) => {
+        const sql = loginType === 'name'?
+            `SELECT password FROM user WHERE name="${name}"`:
+            `SELECT name, password FROM user WHERE email="${name}"`;
+        connection.query(sql, (err, results, fields) => {
             if (err) {
                 reject(err);
             } else {
-                resolve(results[0].password === pwd)
+                if (results && results[0]) {
+                    const result = results[0].password === pwd;
+                    resolve({
+                        result,
+                        errCode: result? 0: 1,
+                        name: loginType === 'name'? name: results[0].name
+                    });
+                } else {
+                    resolve({
+                        result: false,
+                        errCode: 2
+                    });
+                }
             }
         })
     }).catch(err => {
