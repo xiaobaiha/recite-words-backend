@@ -46,29 +46,29 @@ const selectNameAndPwdByEmail = (email, pwd, loginType='name') => {
 
 const userExistByName = async (name) => {
     return new Promise((resolve, reject) => {
-        connection.query(`SELECT * FROM user WHERE name=${name}`, (err, results) => {
+        connection.query(`SELECT * FROM user WHERE name="${name}"`, (err, results) => {
             if(err) {
                 reject(err);
             }
-            reject(results && results[0]);
+            resolve(results && !!results[0]);
         });
     }).catch(console.log);
 }
 
 const userExistByEmail = async (email) => {
     return new Promise((resolve, reject) => {
-        connection.query(`SELECT * FROM user WHERE email=${email}`, (err, results) => {
+        connection.query(`SELECT * FROM user WHERE email="${email}"`, (err, results) => {
             if(err) {
                 reject(err);
             }
-            reject(results && results[0]);
+            resolve(results && !!results[0]);
         });
     }).catch(console.log);
 }
 
 const insertUser = async (name, email, password) => {
     return new Promise((resolve, reject) => {
-        connection.query(`INSERT INTO user (name, email, password) VALUES ("${name}", "${email}", "${pwd}")`, (err, results) => {
+        connection.query(`INSERT INTO user (name, email, password) VALUES ("${name}", "${email}", "${password}")`, (err, results) => {
             if(err) {
                 resolve(false);
             } else {
