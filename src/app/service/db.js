@@ -5,35 +5,83 @@ const connection = mysql.createConnection(mysqlConfig);
 
 connection.connect();
 
-const login = (name, pwd, loginType='name') => {
+const selectPwdByName = (name, pwd) => {
     return new Promise((resolve, reject) => {
-        const sql = loginType === 'name'?
-            `SELECT password FROM user WHERE name="${name}"`:
-            `SELECT name, password FROM user WHERE email="${name}"`;
-        connection.query(sql, (err, results, fields) => {
+        connection.query(`SELECT password FROM user WHERE name="${name}"`, (err, results) => {
             if (err) {
                 reject(err);
             } else {
                 if (results && results[0]) {
-                    const result = results[0].password === pwd;
-                    resolve({
-                        result,
-                        errCode: result? 0: 1,
-                        name: loginType === 'name'? name: results[0].name
-                    });
+                    resolve(results[0].password);
                 } else {
-                    resolve({
-                        result: false,
-                        errCode: 2
-                    });
+                    resolve(null);
                 }
             }
         })
     }).catch(err => {
-        console.error(err);
+        console.log(err);
     }) ;
 }
 
+const selectNameAndPwdByEmail = (email, pwd, loginType='name') => {
+    return new Promise((resolve, reject) => {
+        connection.query(`SELECT name, password FROM user WHERE email="${email}"`, (err, results) => {
+            if (err) {
+                reject(err);
+            } else {
+                if (results && results[0]) {
+                    resolve({
+                        password: results[0].password,
+                        name: results[0].name
+                    });
+                } else {
+                    resolve(null);
+                }
+            }
+        })
+    }).catch(err => {
+        console.log(err);
+    }) ;
+}
+
+const userExistByName = async (name) => {
+    return new Promise((resolve, reject) => {
+        connection.query(`SELECT * FROM user WHERE name=${name}`, (err, results) => {
+            if(err) {
+                reject(err);
+            }
+            reject(results && results[0]);
+        });
+    }).catch(console.log);
+}
+
+const userExistByEmail = async (email) => {
+    return new Promise((resolve, reject) => {
+        connection.query(`SELECT * FROM user WHERE email=${email}`, (err, results) => {
+            if(err) {
+                reject(err);
+            }
+            reject(results && results[0]);
+        });
+    }).catch(console.log);
+}
+
+const insertUser = async (name, email, password) => {
+    return new Promise((resolve, reject) => {
+        connection.query(`INSERT INTO user (name, email, password) VALUES ("${name}", "${email}", "${pwd}")`, (err, results) => {
+            if(err) {
+                resolve(false);
+            } else {
+                resolve(true);
+            }
+        });
+    }).catch(console.log);
+}
+
 module.exports = {
-    login
+    selectPwdByName,
+    selectNameAndPwdByEmail,
+    userExistByName,
+    userExistByEmail,
+    insertUser
 }

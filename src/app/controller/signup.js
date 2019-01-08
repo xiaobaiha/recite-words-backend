@@ -1,6 +1,7 @@
 const parse = require('co-body');
-const {login} = require('../service/db');
+const {signup} = require('../service/db');
 
 module.exports = async ctx => {
-    const {name, password} = await parse(ctx.request);
+    const {name, password, email} = await parse(ctx.request);
+    ctx.body = {};
 }
