@@ -1,6 +1,7 @@
-const checkSessionId = (id, session) => {
-    if (session.auth) {
-        return id === session.auth;
+const checkSessionId = ctx => {
+    console.log(ctx.cookies.get('auth'), ctx.session.auth)
+    if (ctx.session.auth) {
+        return ctx.cookies.get('auth') === ctx.session.auth;
     } else {
         return false;
     }
@@ -8,7 +9,7 @@ const checkSessionId = (id, session) => {
 
 const saveSession = (ctx, auth) => {
     ctx.session.auth = auth;
-    ctx.cookies.set('auth', JSON.stringify(ctx.session.auth), { 
+    ctx.cookies.set('auth', ctx.session.auth, { 
         path: '/',
         maxAge: 10 * 60 * 1000,
         httpOnly: false,

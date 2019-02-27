@@ -7,7 +7,7 @@ module.exports = async ctx => {
     const byName = await selectPwdByName(email, password);
     const byEmail = await selectNameAndPwdByEmail(email, password);
     let pwd, _name;
-    const alreadyLogin = checkSessionId(ctx.cookies.get('auth'), ctx.session);
+    const alreadyLogin = checkSessionId(ctx);
 
     if (alreadyLogin) {
         ctx.body = {
