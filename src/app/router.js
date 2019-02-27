@@ -7,5 +7,5 @@ const router = new Router();
 
 module.exports = router
     .post('/hello', hello)
-    .post('/api/login', login)
-    .post('/api/signup', signup);
+    .post('/login', login)
+    .post('/signup', signup);
