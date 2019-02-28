@@ -3,12 +3,12 @@ const {selectPwdByName,selectNameAndPwdByEmail} = require('../service/db');
 const { checkSessionId, saveSession } = require('../service/session_common');
 
 module.exports = async ctx => {
-    const {email, password} = JSON.parse(await parse(ctx.request));
+    const params = await parse.text(ctx.request);
+    const {email, password} = JSON.parse(params);
     const byName = await selectPwdByName(email, password);
     const byEmail = await selectNameAndPwdByEmail(email, password);
     let pwd, _name;
     const alreadyLogin = checkSessionId(ctx);
-
     if (alreadyLogin) {
         ctx.body = {
             result: false,
